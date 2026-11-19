@@ -47,6 +47,8 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 
 访问统计使用 Redis Stream 异步落库。统计消息失败时默认最多重试 3 次，超过上限后写入 `short-link:stats-stream:dead-letter`，便于后续排查和补偿。可通过 `short-link.stats.stream.max-retries` 调整重试次数。
 
+公开仓库使用环境变量注入数据库密码、Redis 密码和高德地图 API Key。示例数据文件只保留说明，不包含真实用户信息。
+
 - 什么是 SaaS 短链接系统：[https://nageoffer.com/shortlink](https://nageoffer.com/shortlink)
 - 🔥SaaS 短链接视频教程：[https://nageoffer.com/shortlink/video](https://nageoffer.com/shortlink/video)
 
@@ -106,4 +108,3 @@ URL。短链接通常只包含几个字符，而原始的长 URL 可能会非常
 短链接视频学习地址：[手摸手视频学习SaaS短链接项目](https://nageoffer.com/shortlink/video/)
 
 ![](https://oss.open8gu.com/image-20231122173916783.png)
-
