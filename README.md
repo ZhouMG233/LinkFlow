@@ -176,6 +176,7 @@ mvn -pl project -am -Dmaven.compiler.encoding=UTF-8 -Dproject.build.sourceEncodi
 
 ## 项目文档
 
+- [管理端前端功能说明](console-vue/README.md)
 - [二次开发设计文档](docs/superpowers/specs/2026-11-19-linkflow-stats-retry-design.md)
 - [二次开发步骤文档](docs/superpowers/plans/2026-11-19-linkflow-stats-retry.md)
 - [重试与死信运行说明](docs/linkflow-stats-retry.md)
