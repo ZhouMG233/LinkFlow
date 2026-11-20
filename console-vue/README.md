@@ -1,35 +1,58 @@
-# smallMark
+# LinkFlow 管理端
 
-This template should help get you started developing with Vue 3 in Vite.
+`console-vue` 是 LinkFlow 短链接运营平台的管理端前端，面向运营人员提供短链接创建、分组管理、访问数据查看和链接生命周期管理等功能。
 
-## Recommended IDE Setup
+## 功能说明
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- 用户登录和会话管理
+- 创建、编辑、分页查询和批量创建短链接
+- 设置短链接所属分组、有效期和目标地址
+- 展示短链接访问趋势以及 PV、UV、UIP 等统计指标
+- 查看访问地区、浏览器、操作系统、设备和网络类型分布
+- 生成短链接二维码，方便活动页面和线下物料投放
+- 将失效或删除的链接放入回收站，并支持恢复和彻底删除
 
-## Customize configuration
+前端通过网关访问 `admin` 和 `aggregation` 服务。短链接跳转由业务服务处理，统计数据由后端异步消费 Redis Stream 后提供给管理端展示。
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## 技术栈
 
-## Project Setup
+- Vue 3
+- Vite
+- Vue Router
+- Vuex
+- Element Plus
+- Axios
+- ECharts
+- QRCode
+
+## 项目设置
+
+安装依赖：
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+启动开发服务：
 
 ```sh
 pnpm dev
 ```
 
-### Compile and Minify for Production
+构建生产版本：
 
 ```sh
 pnpm build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+执行代码检查和格式化：
 
 ```sh
 pnpm lint
+pnpm format
 ```
+
+## 与后端联调
+
+开发环境接口地址由 `vite.config.js` 和 `src/api/axios.js` 配置。启动前端前，请先启动 LinkFlow 的网关及后端服务，并确认前端代理地址指向本地 Gateway。
+
