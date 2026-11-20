@@ -42,6 +42,13 @@ LinkFlow 的访问统计通过 Redis Stream 异步落库。每条统计消息代
   → 新消息写入成功后删除原消息
 ```
 
+## 故障排查
+
+- 统计数据没有更新时，先检查 Redis Stream 消费者是否正常运行。
+- 反复失败的消息应在 `short-link:stats-stream:dead-letter` 中排查原始内容和错误摘要。
+- 调整 `short-link.stats.stream.max-retries` 后，需要重启 `project` 服务使配置生效。
+- 重试或死信写入失败时，原消息会保留在原 Stream，便于 Redis 恢复后再次处理。
+
 ## 本地验证
 
 公开仓库不包含真实种子用户、数据库密码或第三方 API Key。启动本地服务前，请通过环境变量提供 `DB_PASSWORD`、`DB_AES_KEY`、`REDIS_PASSWORD` 和 `AMAP_KEY`。
