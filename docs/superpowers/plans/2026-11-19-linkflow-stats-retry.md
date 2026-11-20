@@ -1,10 +1,16 @@
-# LinkFlow Stats Retry Implementation Plan
+# LinkFlow 统计可靠性二次开发实施计划
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> 本文记录 LinkFlow 短链接运营平台本次二次开发的实施步骤和验证结果。
 
-**Goal:** 将项目展示名统一为 LinkFlow—短链接运营平台，并为 Redis Stream 统计消息增加有限重试和死信留存。
+**Goal:** 将项目展示名统一为 LinkFlow—短链接运营平台，并为 Redis Stream 访问统计消息增加有限重试和死信留存。
 
-**Architecture:** 在现有 Redis Stream 生产者和消费者之间增加稳定业务键、重试次数和死信 Stream。消费者失败时由同一组件负责重新投递或写入死信，现有统计落库逻辑保持不变。
+## 项目功能背景
+
+LinkFlow 为营销推广和渠道投放提供短链接运营能力，包含短链接创建、批量生成、分组管理、有效期控制、缓存跳转、访问统计和回收站管理。短链访问请求需要快速完成重定向，PV、UV、UIP 以及地区、设备、浏览器等统计数据由 Redis Stream 异步传递给消费者，再落库供管理端查询。
+
+本次二次开发只聚焦统计消息的可靠处理。短链接创建、跳转缓存和统计查询等业务功能继续复用原有实现。
+
+**Architecture:** 在现有 Redis Stream 生产者和消费者之间增加稳定业务键、重试次数和死信 Stream。消费者失败时由同一组件负责重新投递或写入死信，成功消息仍按原流程更新统计数据并删除消息。
 
 **Tech Stack:** Java 17、Spring Boot 3、Spring Data Redis、Redis Stream、JDK 自检程序。
 
@@ -80,9 +86,9 @@
 - Modify: `README.md`
 - Create: `docs/linkflow-stats-retry.md`
 
-- [x] **Step 1: 将项目展示名更新为 LinkFlow—短链接运营平台**
+- [x] **Step 1: 将项目展示名和业务功能统一为 LinkFlow—短链接运营平台**
 
-README 的项目标题、简介和新增功能说明使用统一名称。
+README、前端模块说明、设计文档和运行说明统一描述短链接创建、访问跳转、访问统计及本次可靠性二次开发。
 
 - [x] **Step 2: 编写运行与验证说明**
 
@@ -92,6 +98,7 @@ README 的项目标题、简介和新增功能说明使用统一名称。
 
 运行目标单元测试、`mvnw.cmd -pl project -am test` 和 `git diff --check`。若环境无法运行 Java 或 Maven，记录具体阻塞信息。
 
-- [ ] **Step 4: 提交变更**
+- [x] **Step 4: 提交变更**
 
-提交信息使用 `feat: add LinkFlow stats retry and dead letter handling`。
+已完成代码、配置和文档提交，统计重试与死信功能已合并到 LinkFlow 项目版本。
+
