@@ -4,6 +4,8 @@ LinkFlow 是一个面向营销推广场景的 SaaS 短链接运营平台。系�
 
 项目重点解决短链服务中的热点访问、缓存异常、统计链路阻塞、数据分片和服务拆分问题，适合作为 Java 后端学习和二次开发项目。
 
+本项目基于原项目进行二次开发，借助 Vibe Coding 辅助完成代码阅读、方案梳理、功能实现、测试验证和文档整理，关键设计与代码经过人工复核。
+
 ## 项目定位
 
 短链接服务的基本流程如下：
@@ -186,8 +188,7 @@ mvn -pl project -am -Dmaven.compiler.encoding=UTF-8 -Dproject.build.sourceEncodi
 - [二次开发步骤文档](docs/superpowers/plans/2026-11-19-linkflow-stats-retry.md)
 - [重试与死信运行说明](docs/linkflow-stats-retry.md)
 
-## 参考资料
+## 原项目地址
 
-- [SaaS 短链接项目说明](https://nageoffer.com/shortlink)
-- [短链接技术架构说明](https://nageoffer.com/shortlink/framework/)
+- [nageoffer/shortlink](https://github.com/nageoffer/shortlink)
 
