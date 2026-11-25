@@ -34,6 +34,12 @@ const router = createRouter({
           meta: { title: '账户设置' }
         },
         {
+          path: 'stats-dead-letters',
+          name: 'StatsDeadLetters',
+          component: () => import('@/views/statsDeadLetter/StatsDeadLetterIndex.vue'),
+          meta: { title: '统计死信' }
+        },
+        {
           path: 'account',
           name: 'Mine',
           component: () => import('@/views/mine/MineIndex.vue'),

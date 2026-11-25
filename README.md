@@ -135,6 +135,16 @@ admin ───── aggregation
 - 死信消息保留原始统计内容、错误摘要、失败时间和重试次数
 - 重试或死信写入成功后删除原消息，避免异常消息无限堆积
 
+### 统计死信运维入口
+
+在 `admin`（独立部署）或 `aggregation`（聚合部署）设置 `LINKFLOW_STATS_DEAD_LETTER_OPERATORS`，填写已有运维账号的用户名，多个账号用英文逗号分隔。默认关闭权限。运维账号登录后，从管理端右上角账号菜单进入「统计死信」。
+
+- `GET /api/short-link/admin/v1/stats/dead-letters` 按入队顺序倒序查询，每页 20 条。继续查询时将返回的 `nextBefore` 传给 `before`。列表显示死信 ID、重试次数、错误摘要和失败时间。
+- `POST /api/short-link/admin/v1/stats/dead-letters/replay?id=<死信ID>` 将一条死信重新投入统计 Stream。成功返回新消息 ID，表示已入队、等待消费。原访问数据和业务键沿用，重试计数重新从零开始。
+- 运维入口与统计消费者使用同一个 Redis 实例。重放在 Redis 内原子执行入队和移除，两步均成功后旧死信才从列表移除。同一死信再次重放会返回 404。部署本次修改前生成的死信可能已有部分统计落库，重放前应先核对。
+
+本地启动参数、权限验证、重放前后 SQL 对照和访问时间核对步骤见 [统计死信端到端复现](docs/linkflow-stats-retry.md#端到端复现)。
+
 ### 二次开发验证
 
 新增 `StatsMessageRetryPolicyTest`，覆盖以下场景：
@@ -154,6 +164,7 @@ admin ───── aggregation
 | `DB_AES_KEY` | ShardingSphere AES 字段加密密钥 |
 | `REDIS_PASSWORD` | Redis 密码 |
 | `AMAP_KEY` | 高德地图 API Key |
+| `LINKFLOW_STATS_DEAD_LETTER_OPERATORS` | 统计死信运维用户名，多个用户名用英文逗号分隔 |
 
 `resources/database/link.sql` 只包含数据库结构。`resources/database/link-data.example.sql` 仅用于说明公开示例数据格式，不包含真实用户信息。
 
@@ -163,7 +174,7 @@ admin ───── aggregation
 2. 创建 `link` 数据库并执行 `resources/database/link.sql`。
 3. 设置数据库、Redis 和高德地图相关环境变量。
 4. 根据本地服务地址检查各模块的 `application.yaml`。
-5. 按照模块依赖启动 Nacos、Redis、MySQL、admin、project、aggregation 和 gateway。
+5. 启动 MySQL、Redis 和 Nacos。聚合模式启动 `aggregation` 和 `gateway`。拆分模式启动 `admin`、`project` 和 `gateway`，并将网关切换到 `dev` 配置。
 6. 启动 `console-vue` 后访问管理端页面。
 
 ## 构建与测试

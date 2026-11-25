@@ -44,6 +44,7 @@ short-link:
       - /api/short-link/admin/v1/user
       - /api/short-link/admin/v1/user/logout
       - /api/short-link/admin/v1/recycle-bin/save
+      - /api/short-link/admin/v1/stats/dead-letters/replay
   stats:
     locale:
       amap-key: ${AMAP_KEY:}

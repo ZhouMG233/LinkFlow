@@ -44,6 +44,9 @@
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="toMine">个人信息</el-dropdown-item>
+                  <el-dropdown-item style="min-height: 44px" @click="router.push({ name: 'StatsDeadLetters' })">
+                    统计死信
+                  </el-dropdown-item>
                   <el-dropdown-item divided @click="logout">退出</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
