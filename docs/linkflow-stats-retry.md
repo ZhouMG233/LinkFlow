@@ -76,7 +76,7 @@ singleServerConfig:
 
 ### 1. 用一次真实访问产生死信
 
-在管理端注册两个测试账号，例如 `lf_e2e_member` 和 `lf_e2e_ops`。只把后者添加到运维名单。创建一条测试短链，目标可选本机管理端首页。记下完整短链标识（例如 `127.0.0.1:8003/<短码>`，去掉协议）。创建成功后，在测试 Redis 库查看 `EXISTS "short-link:goto:127.0.0.1:8003/<短码>"`，应为 `1`。
+在管理端注册两个测试账号，例如 `lf_member` 和 `lf_e2e_ops`。只把后者添加到运维名单。创建一条测试短链，目标可选 `http://127.00.00.01:5173/` 访问本机管理端首页。记下完整短链标识（例如 `127.0.0.1:8003/<短码>`，去掉协议）。创建成功后，在测试 Redis 库查看 `EXISTS "short-link:goto:127.0.0.1:8003/<短码>"`，应为 `1`。
 
 通过创建短链时的 ShardingSphere 实际 SQL 日志核对分片表，或以完整短链标识在测试库中查出匹配行，记下该链接的 `t_link_goto_*` 和 `t_link_*` 实际表名。确认短链尚无访问，然后在 MySQL 会话中临时改名这一条测试映射。把示例中的 `t_link_goto_N` 换成实际分片表名。
 
@@ -108,7 +108,7 @@ SELECT ROW_COUNT() AS restored_rows;
 ```powershell
 $base = 'http://127.0.0.1:8000/api/short-link/admin/v1/stats/dead-letters'
 $deadId = '<本次死信ID>'
-$member = 'lf_e2e_member'
+$member = 'lf_member'
 $memberToken = '<普通账号有效Token>'
 curl.exe --noproxy "*" -i -X POST -H "Username: $member" -H "Token: $memberToken" "${base}/replay?id=$deadId"
 ```
@@ -164,6 +164,8 @@ WHERE full_short_url = @url;
 | 访问时间 | 原消息 `19:39:43.958`，MySQL 明细 `19:39:44`，重放写入 `19:39:49` |
 
 联调结束后停止临时联调进程，清理独立测试库和本次写入的 Redis 键。
+
+本地启动修复提交 `336a4c2` 已在干净工作树用 JDK 17 重新验收。短链 `1xL2HK` 产生死信 `1795611599300-0`，运维重放后的新消息为 `1795611602754-0`。普通账号两项操作仍返回 403，重复重放返回 404，四项计数仍为 1。原访问时间 `20:59:59.200` 按列精度保存为 `20:59:59`，重放写入时间为 `21:00:03`。 [本地部署与验收](linkflow-local-deployment.md#10-停止本机实验并记录验证环境)
 
 ## 故障排查
 

@@ -170,12 +170,7 @@ admin ───── aggregation
 
 ## 本地运行准备
 
-1. 安装 JDK 17、Maven、MySQL、Redis 和 Nacos。
-2. 创建 `link` 数据库并执行 `resources/database/link.sql`。
-3. 设置数据库、Redis 和高德地图相关环境变量。
-4. 根据本地服务地址检查各模块的 `application.yaml`。
-5. 启动 MySQL、Redis 和 Nacos。聚合模式启动 `aggregation` 和 `gateway`。拆分模式启动 `admin`、`project` 和 `gateway`，并将网关切换到 `dev` 配置。
-6. 启动 `console-vue` 后访问管理端页面。
+按 [Windows 本地部署与验收](docs/linkflow-local-deployment.md) 从本地 `main` 直接运行或创建独立工作树。启动必需文件已在 `336a4c2` 补齐。初次运行可用聚合模式加本机静态服务发现，依次启动 MySQL、Redis、聚合服务 JAR、网关 JAR 和前端。
 
 ## 构建与测试
 
@@ -189,6 +184,8 @@ mvn -pl project -am -Dmaven.compiler.encoding=UTF-8 -Dproject.build.sourceEncodi
 
 ## 项目文档
 
+- [项目架构、业务事件与二开解析](docs/linkflow-architecture-and-implementation.md)
+- [Windows 本地部署与验收](docs/linkflow-local-deployment.md)
 - [管理端前端功能说明](console-vue/README.md)
 - [管理服务说明](admin/README.md)
 - [聚合服务说明](aggregation/README.md)
